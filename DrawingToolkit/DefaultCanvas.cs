@@ -101,6 +101,30 @@ namespace DrawingToolkit
 
         public DrawingObject SelectObjectAt(int x, int y)
         {
+            DrawingObject obj = GetObjectAt(x, y);
+            if (obj != null)
+            {
+                obj.Select();
+            }
+
+            return obj;
+        }
+
+        public void DeselectAllObjects()
+        {
+            foreach (DrawingObject drawObj in drawingObjects)
+            {
+                drawObj.Deselect();
+            }
+        }
+
+        public void RemoveDrawingObject(DrawingObject drawingObject)
+        {
+            this.drawingObjects.Remove(drawingObject);
+        }
+
+        public DrawingObject GetObjectAt(int x, int y)
+        {
             foreach (DrawingObject obj in drawingObjects)
             {
                 if (obj.Intersect(x, y))
@@ -109,19 +133,6 @@ namespace DrawingToolkit
                 }
             }
             return null;
-        }
-
-        public void DeselectAllObjects()
-        {
-            foreach (DrawingObject obj in drawingObjects)
-            {
-
-            }
-        }
-
-        public void RemoveDrawingObject(DrawingObject drawingObject)
-        {
-            this.drawingObjects.Remove(drawingObject);
         }
     }
 }

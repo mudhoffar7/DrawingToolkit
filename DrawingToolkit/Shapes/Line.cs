@@ -86,7 +86,14 @@ namespace DrawingToolkit.Shapes
         }
         public override void RenderOnEditingView()
         {
-            RenderOnStaticView();
+            pen.Color = Color.Blue;
+            pen.Width = 1.5f;
+            pen.DashStyle = DashStyle.Solid;
+            if (this.Graphics != null)
+            {
+                this.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                this.Graphics.DrawLine(pen, this.startPoint, this.finishPoint);
+            }
         }
         public override void RenderOnPreview()
         {
@@ -98,6 +105,12 @@ namespace DrawingToolkit.Shapes
                 this.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                 this.Graphics.DrawLine(pen, this.startPoint, this.finishPoint);
             }
+        }
+
+        public override void Translate(int x, int y, int xAmount, int yAmount)
+        {
+            this.startPoint = new Point(this.startPoint.X + xAmount, this.startPoint.Y + yAmount);
+            this.finishPoint = new Point(this.finishPoint.X + xAmount, this.finishPoint.Y + yAmount);
         }
     }
 }
