@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,8 @@ namespace DrawingToolkit.Tools
     public class SelectTool : ToolStripButton, ITool
     {
         private ICanvas canvas;
+        private Point point;
+        private DrawingObject currentObject;
         public Cursor Cursor
         {
             get
@@ -45,7 +48,8 @@ namespace DrawingToolkit.Tools
 
                 if (dobject.isSelected(e.Location))
                 {
-
+                    point = e.Location;
+                    currentObject = dobject;
                     this.canvas.Repaint();
                 }
                 else
@@ -59,7 +63,14 @@ namespace DrawingToolkit.Tools
 
         public void ToolMouseMove(object sender, MouseEventArgs e)
         {
-            
+            if (e.Button == MouseButtons.Left)
+            {
+                int xMove = e.X - point.X;
+                int yMove = e.Y - point.Y;
+                point = e.Location;
+                currentObject.Move(e, xMove, yMove);
+                this.canvas.Repaint();
+            }
         }
 
         public void ToolMouseUp(object sender, MouseEventArgs e)

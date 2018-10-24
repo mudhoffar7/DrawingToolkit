@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace DrawingToolkit.Shapes
 {
@@ -52,6 +53,13 @@ namespace DrawingToolkit.Shapes
         public override void isNotSelected()
         {
             pen.Color = Color.FromArgb(255, 0, 0, 0);
+        }
+
+        public override void Move(MouseEventArgs e, int x, int y)
+        {
+            Point point = e.Location;
+            startPoint = new Point((startPoint.X + x), (startPoint.Y + y));
+            finishPoint = new Point((finishPoint.X + x), (finishPoint.Y + y));
         }
     }
 }
