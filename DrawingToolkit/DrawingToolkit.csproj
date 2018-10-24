@@ -50,6 +50,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="DrawingObject.cs" />
+    <Compile Include="DrawingState.cs" />
     <Compile Include="DrawingWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -71,6 +72,11 @@
     <Compile Include="DefaultToolBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Shapes\StatefulLine.cs" />
+    <Compile Include="StatefulDrawingObject.cs" />
+    <Compile Include="States\EditState.cs" />
+    <Compile Include="States\PreviewState.cs" />
+    <Compile Include="States\StaticState.cs" />
     <Compile Include="Tools\CircleTool.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -78,6 +84,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Tools\SelectTool.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\StatefulLineTool.cs">
       <SubType>Component</SubType>
     </Compile>
     <EmbeddedResource Include="DrawingWindow.resx">
