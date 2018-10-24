@@ -15,5 +15,8 @@ namespace DrawingToolkit
         void AddDrawingObject(DrawingObject drawingObject);
         void CheckSelectedObject();
         List<DrawingObject> GetListObjects();
+        DrawingObject SelectObjectAt(int x, int y);
+        void DeselectAllObjects();
+        void RemoveDrawingObject(DrawingObject drawingObject);
     }
 }

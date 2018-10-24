@@ -72,8 +72,6 @@
     <Compile Include="DefaultToolBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Shapes\StatefulLine.cs" />
-    <Compile Include="StatefulDrawingObject.cs" />
     <Compile Include="States\EditState.cs" />
     <Compile Include="States\PreviewState.cs" />
     <Compile Include="States\StaticState.cs" />
@@ -84,9 +82,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Tools\SelectTool.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Tools\StatefulLineTool.cs">
       <SubType>Component</SubType>
     </Compile>
     <EmbeddedResource Include="DrawingWindow.resx">

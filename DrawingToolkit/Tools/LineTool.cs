@@ -45,17 +45,35 @@ namespace DrawingToolkit.Tools
         public void ToolMouseDown(object sender, MouseEventArgs e)
         {
             line = new Line(new System.Drawing.Point(e.X, e.Y));
+            line.finishPoint = new System.Drawing.Point(e.X, e.Y);
+            canvas.AddDrawingObject(line);
         }
 
         public void ToolMouseMove(object sender, MouseEventArgs e)
         {
-           
+            if (e.Button == MouseButtons.Left)
+            {
+                if (this.line != null)
+                {
+                    line.finishPoint = new System.Drawing.Point(e.X, e.Y);
+                }
+            }
         }
 
         public void ToolMouseUp(object sender, MouseEventArgs e)
         {
-            line.finishPoint = new System.Drawing.Point(e.X, e.Y);
-            canvas.AddDrawingObject(line);
+            if (this.line != null)
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    line.finishPoint = new System.Drawing.Point(e.X, e.Y);
+                    line.Select();
+                }
+                else if (e.Button == MouseButtons.Right)
+                {
+                    canvas.RemoveDrawingObject(this.line);
+                }
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,6 +52,34 @@ namespace DrawingToolkit.Shapes
         public override void isNotSelected()
         {
             pen.Color = Color.FromArgb(255, 0, 0, 0);
+        }
+
+        public override bool Intersect(int xTest, int yTest)
+        {
+            if ((xTest >= cirX && xTest <= cirX + cirWidth) && (yTest >= cirY && yTest <= cirY + cirHeight))
+            { 
+                return true;
+            }
+            return false;
+        }
+
+        public override void RenderOnStaticView()
+        {
+            this.pen.Color = Color.Black;
+            this.pen.DashStyle = DashStyle.Solid;
+            Graphics.DrawRectangle(this.pen, cirX, cirY, cirWidth, cirHeight);
+        }
+        public override void RenderOnEditingView()
+        {
+            this.pen.Color = Color.Black;
+            this.pen.DashStyle = DashStyle.Solid;
+            Graphics.DrawRectangle(this.pen, cirX, cirY, cirWidth, cirHeight);
+        }
+        public override void RenderOnPreview()
+        {
+            this.pen.Color = Color.Red;
+            this.pen.DashStyle = DashStyle.DashDot;
+            Graphics.DrawRectangle(this.pen, cirX, cirY, cirWidth, cirHeight);
         }
     }
 }

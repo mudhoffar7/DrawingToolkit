@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,6 +53,51 @@ namespace DrawingToolkit.Shapes
         public override void isNotSelected()
         {
             pen.Color = Color.FromArgb(255, 0, 0, 0);
+        }
+
+        public override bool Intersect(int xTest, int yTest)
+        {
+            double m = GetSlope();
+            double b = finishPoint.Y - m * finishPoint.X;
+            double y_point = m * xTest + b;
+            if (Math.Abs(yTest - y_point) < EPSILON)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private double GetSlope()
+        {
+            double m = (double)(finishPoint.Y - startPoint.Y) / (double)(finishPoint.X - startPoint.X);
+            return m;
+        }
+
+        public override void RenderOnStaticView()
+        {
+            pen.Color = Color.Black;
+            pen.Width = 1.5f;
+            pen.DashStyle = DashStyle.Solid;
+            if (this.Graphics != null)
+            {
+                this.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                this.Graphics.DrawLine(pen, this.startPoint, this.finishPoint);
+            }
+        }
+        public override void RenderOnEditingView()
+        {
+            RenderOnStaticView();
+        }
+        public override void RenderOnPreview()
+        {
+            pen.Color = Color.Red;
+            pen.Width = 1.5f;
+            pen.DashStyle = DashStyle.DashDotDot;
+            if (this.Graphics != null)
+            {
+                this.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                this.Graphics.DrawLine(pen, this.startPoint, this.finishPoint);
+            }
         }
     }
 }

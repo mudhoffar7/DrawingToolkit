@@ -46,6 +46,7 @@ namespace DrawingToolkit.Tools
             if (e.Button == MouseButtons.Left)
             {
                 this.circle = new Circle(e.X, e.Y);
+                this.canvas.AddDrawingObject(this.circle);
             }
         }
 
@@ -66,9 +67,16 @@ namespace DrawingToolkit.Tools
 
         public void ToolMouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (circle != null)
             {
-                canvas.AddDrawingObject(this.circle);
+                if (e.Button == MouseButtons.Left)
+                {
+                    this.circle.Select();
+                }
+                else if (e.Button == MouseButtons.Right)
+                {
+                    canvas.RemoveDrawingObject(this.circle);
+                }
             }
         }
     }
