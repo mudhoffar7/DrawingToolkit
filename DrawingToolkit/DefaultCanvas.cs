@@ -42,6 +42,7 @@ namespace DrawingToolkit
             if (this.activeTool != null)
             {
                 this.activeTool.ToolMouseUp(sender, e);
+                this.Repaint();
             }
         }
 
@@ -50,6 +51,7 @@ namespace DrawingToolkit
             if (this.activeTool != null)
             {
                 this.activeTool.ToolMouseMove(sender, e);
+                this.Repaint();
             }
         }
 
@@ -58,6 +60,7 @@ namespace DrawingToolkit
             if (this.activeTool != null)
             {
                 this.activeTool.ToolMouseDown(sender, e);
+                this.Repaint();
             }
         }
 
@@ -89,12 +92,47 @@ namespace DrawingToolkit
         public void AddDrawingObject(DrawingObject drawingObject)
         {
             this.drawingObjects.Add(drawingObject);
-            this.Repaint();
         }
 
         public void CheckSelectedObject()
         {
             throw new NotImplementedException();
+        }
+
+        public DrawingObject SelectObjectAt(int x, int y)
+        {
+            DrawingObject obj = GetObjectAt(x, y);
+            if (obj != null)
+            {
+                obj.Select();
+            }
+
+            return obj;
+        }
+
+        public void DeselectAllObjects()
+        {
+            foreach (DrawingObject drawObj in drawingObjects)
+            {
+                drawObj.Deselect();
+            }
+        }
+
+        public void RemoveDrawingObject(DrawingObject drawingObject)
+        {
+            this.drawingObjects.Remove(drawingObject);
+        }
+
+        public DrawingObject GetObjectAt(int x, int y)
+        {
+            foreach (DrawingObject obj in drawingObjects)
+            {
+                if (obj.Intersect(x, y))
+                {
+                    return obj;
+                }
+            }
+            return null;
         }
     }
 }

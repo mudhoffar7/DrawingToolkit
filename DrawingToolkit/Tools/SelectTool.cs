@@ -10,6 +10,10 @@ namespace DrawingToolkit.Tools
     public class SelectTool : ToolStripButton, ITool
     {
         private ICanvas canvas;
+        private DrawingObject selectedObject;
+        private int xInitial;
+        private int yInitial;
+
         public Cursor Cursor
         {
             get
@@ -39,7 +43,7 @@ namespace DrawingToolkit.Tools
         }
         public void ToolMouseDown(object sender, MouseEventArgs e)
         {
-            List<DrawingObject> ListObjects = this.canvas.GetListObjects();
+            /*List<DrawingObject> ListObjects = this.canvas.GetListObjects();
             foreach (DrawingObject dobject in ListObjects)
             {
 
@@ -54,12 +58,31 @@ namespace DrawingToolkit.Tools
                     this.canvas.Repaint();
                 }
 
+            }*/
+            this.xInitial = e.X;
+            this.yInitial = e.Y;
+
+            if (e.Button == MouseButtons.Left && canvas != null)
+            {
+                canvas.DeselectAllObjects();
+                selectedObject = canvas.SelectObjectAt(e.X, e.Y);
             }
         }
 
         public void ToolMouseMove(object sender, MouseEventArgs e)
         {
-            
+            if (e.Button == MouseButtons.Left && canvas != null)
+            {
+                if (selectedObject != null)
+                {
+                    int xAmount = e.X - xInitial;
+                    int yAmount = e.Y - yInitial;
+                    xInitial = e.X;
+                    yInitial = e.Y;
+
+                    selectedObject.Translate(e.X, e.Y, xAmount, yAmount);
+                }
+            }
         }
 
         public void ToolMouseUp(object sender, MouseEventArgs e)
