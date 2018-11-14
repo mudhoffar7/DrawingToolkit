@@ -5,19 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 using DrawingToolkit.Shapes;
 using System.Windows.Forms;
+using DrawingToolkit.States;
 
 namespace DrawingToolkit.Tools
 {
     public class LineTool : ToolStripButton, ITool
     {
         private ICanvas canvas;
-        private Line line;
-        public Cursor Cursor
+
+        private Line lineSegment;
+
+        public LineTool()
         {
-            get
-            {
-                return Cursors.Arrow;
-            }
+            this.Name = "Line Tool";
+            this.ToolTipText = "Line Tool";
+            this.Image = IconSet.line;
+            this.CheckOnClick = true;
         }
 
         public ICanvas TargetCanvas
@@ -31,49 +34,52 @@ namespace DrawingToolkit.Tools
             {
                 this.canvas = value;
             }
-
         }
 
-        public LineTool()
+        public Cursor Cursor => throw new NotImplementedException();
+
+        public void ToolHotKeysDown(object sender, KeyEventArgs e)
         {
-            this.Name = "Line Tool";
-            this.ToolTipText = "Line Tool";
-            this.Image = IconSet.line;
-            this.CheckOnClick = true;
+            throw new NotImplementedException();
         }
 
         public void ToolMouseDown(object sender, MouseEventArgs e)
         {
-            line = new Line(new System.Drawing.Point(e.X, e.Y));
-            line.finishPoint = new System.Drawing.Point(e.X, e.Y);
-            canvas.AddDrawingObject(line);
+            if (e.Button == MouseButtons.Left)
+            {
+                lineSegment = new Line(new System.Drawing.Point(e.X, e.Y));
+                lineSegment.Endpoint = new System.Drawing.Point(e.X, e.Y);
+                this.lineSegment.ChangeState(PreviewState.GetInstance());
+                canvas.AddDrawingObject(lineSegment);
+            }
         }
 
         public void ToolMouseMove(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
-                if (this.line != null)
+                if (this.lineSegment != null)
                 {
-                    line.finishPoint = new System.Drawing.Point(e.X, e.Y);
+                    lineSegment.Endpoint = new System.Drawing.Point(e.X, e.Y);
                 }
             }
         }
 
         public void ToolMouseUp(object sender, MouseEventArgs e)
         {
-            if (this.line != null)
+            if (e.Button == MouseButtons.Left)
             {
-                if (e.Button == MouseButtons.Left)
+                if (this.lineSegment != null)
                 {
-                    line.finishPoint = new System.Drawing.Point(e.X, e.Y);
-                    line.Select();
-                }
-                else if (e.Button == MouseButtons.Right)
-                {
-                    canvas.RemoveDrawingObject(this.line);
+                    lineSegment.Endpoint = new System.Drawing.Point(e.X, e.Y);
+                    this.lineSegment.ChangeState(StaticState.GetInstance());
                 }
             }
+
+        }
+        public void ToolHotKeysUp(object sender, KeyEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

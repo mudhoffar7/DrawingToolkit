@@ -25,9 +25,9 @@ namespace DrawingToolkit
             //default implementation, no state transition
         }
 
-        public virtual void Select(DrawingObject obj)
-        {
+        //public virtual void Select(DrawingObject obj)
+        //{
             //default implementation, no state transition
-        }
+        //}
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,16 +11,24 @@ namespace DrawingToolkit
 {
     public abstract class DrawingObject
     {
-        public Graphics Graphics { get; set; }
-        
-        public abstract Boolean isSelected(Point mouse);
-        public abstract void isNotSelected();
-
-        public abstract bool Intersect(int xTest, int yTest);
-
-        public abstract void Translate(int x, int y, int xAmount, int yAmount);
-
-
+        private DrawingObject ParentGroup = null;
+        private DrawingObject ChildGroup = null;
+        public Graphics Graphics;
+        protected DrawingState state;
+        public Point Startpoint;
+        public Point Endpoint;
+        public Pen pen;
+        public virtual void Draw()
+        {
+            this.state.Draw(this);
+        }
+        abstract public void DrawLogic();
+        abstract public Boolean intersect(Point MousePosition);
+        public virtual void move(int x, int y, int xAmount, int yAmount)
+        {
+            this.Startpoint = new Point(this.Startpoint.X + xAmount, this.Startpoint.Y + yAmount);
+            this.Endpoint = new Point(this.Endpoint.X + xAmount, this.Endpoint.Y + yAmount);
+        }
         public DrawingState State
         {
             get
@@ -27,33 +36,41 @@ namespace DrawingToolkit
                 return this.state;
             }
         }
-        private DrawingState state;
-
-        public DrawingObject()
+        public virtual void ChangeState(DrawingState state)
         {
-            this.ChangeState(PreviewState.GetInstance());
+            this.state = state;
         }
 
-        public abstract void RenderOnPreview();
-        public abstract void RenderOnEditingView();
-        public abstract void RenderOnStaticView();
-
-        public void ChangeState(DrawingState drawingState)
+        public void RenderOnPreview()
         {
-            this.state = drawingState;
+            this.pen = new Pen(Color.Red);
+            pen.Width = 1.5f;
+            pen.DashStyle = DashStyle.DashDotDot;
+            DrawLogic();
+        }
+        public void RenderOnEditingView()
+        {
+            this.pen = new Pen(Color.Blue);
+            pen.Width = 1.5f;
+            pen.DashStyle = DashStyle.Solid;
+            DrawLogic();
+        }
+        public void RenderOnStaticView()
+        {
+            this.pen = new Pen(Color.Black);
+            pen.Width = 1.5f;
+            pen.DashStyle = DashStyle.Solid;
+            DrawLogic();
         }
 
-        public virtual void Draw()
+        internal void ChangeState(object p)
         {
-            this.state.Draw(this);
+            throw new NotImplementedException();
         }
-        public void Select()
+
+        public void addChild(DrawingObject child)
         {
-            this.state.Select(this);
-        }
-        public void Deselect()
-        {
-            this.state.Deselect(this);
+            if (this != child) this.ChildGroup = child;
         }
     }
 }

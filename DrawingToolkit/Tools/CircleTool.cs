@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DrawingToolkit.Shapes;
 using System.Windows.Forms;
+using DrawingToolkit.States;
 
 namespace DrawingToolkit.Tools
 {
@@ -13,25 +14,20 @@ namespace DrawingToolkit.Tools
         private ICanvas canvas;
         private Circle circle;
 
-        public Cursor Cursor
-        {
-            get
-            {
-                return Cursors.Arrow;
-            }
-        }
-
         public ICanvas TargetCanvas
         {
             get
             {
                 return this.canvas;
             }
+
             set
             {
                 this.canvas = value;
             }
         }
+
+        public Cursor Cursor => throw new NotImplementedException();
 
         public CircleTool()
         {
@@ -41,11 +37,13 @@ namespace DrawingToolkit.Tools
             this.CheckOnClick = true;
         }
 
+
         public void ToolMouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
-                this.circle = new Circle(e.X, e.Y);
+                this.circle = new Circle(e.Location, e.Location);
+                this.circle.ChangeState(PreviewState.GetInstance());
                 this.canvas.AddDrawingObject(this.circle);
             }
         }
@@ -54,13 +52,9 @@ namespace DrawingToolkit.Tools
         {
             if (e.Button == MouseButtons.Left)
             {
-                int width = e.X - this.circle.cirX;
-                int height = e.Y - this.circle.cirY;
-
-                if (width > 0 && height > 0)
+                if (this.circle != null)
                 {
-                    this.circle.cirWidth = width;
-                    this.circle.cirHeight = height;
+                    this.circle.Endpoint = new System.Drawing.Point(e.X, e.Y);
                 }
             }
         }
@@ -69,15 +63,18 @@ namespace DrawingToolkit.Tools
         {
             if (circle != null)
             {
-                if (e.Button == MouseButtons.Left)
-                {
-                    this.circle.Select();
-                }
-                else if (e.Button == MouseButtons.Right)
-                {
-                    canvas.RemoveDrawingObject(this.circle);
-                }
+                this.circle.Endpoint = new System.Drawing.Point(e.X, e.Y);
+                this.circle.ChangeState(StaticState.GetInstance());
             }
+        }
+
+        public void ToolHotKeysDown(object sender, KeyEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+        public void ToolHotKeysUp(object sender, KeyEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -10,82 +10,38 @@ namespace DrawingToolkit.Shapes
 {
     public class Circle : DrawingObject
     {
-        public int cirX { get; set; }
-        public int cirY { get; set; }
-        public int cirWidth { get; set; }
-        public int cirHeight { get; set; }
-
-        private Pen pen;
-
-        public Circle()
+        public Circle(Point startPoints, Point endPoints)
         {
-            this.pen = new Pen(Color.Black);
+            this.Startpoint = startPoints;
+            this.Endpoint = endPoints;
         }
 
-        public Circle(int initX, int initY) : this()
+        public override void DrawLogic()
         {
-            this.cirX = initX;
-            this.cirY = initY;
+            if (Startpoint.X > Endpoint.X)
+            {
+                var temp = Startpoint.X;
+                Startpoint.X = Endpoint.X;
+                Endpoint.X = temp;
+            }
+            if (Startpoint.Y > Endpoint.Y)
+            {
+                var temp = Startpoint.Y;
+                Startpoint.Y = Endpoint.Y;
+                Endpoint.Y = temp;
+            }
+            Rectangle objek = new Rectangle(Startpoint.X, Startpoint.Y, Endpoint.X - Startpoint.X, Endpoint.Y - Startpoint.Y);
+            this.Graphics.DrawEllipse(pen, objek);
         }
 
-        public Circle(int initX, int initY, int initWidth, int initHeight) : this(initX, initY)
+        public override bool intersect(Point MousePosition)
         {
-            this.cirWidth = initWidth;
-            this.cirHeight = initHeight;
-        }
-
-        public override void Draw()
-        {
-            this.Graphics.DrawEllipse(pen, cirX, cirY, cirWidth, cirHeight);
-        }
-
-        public override bool isSelected(Point mouse)
-        {
-            if ((mouse.X >= cirX && mouse.X <= cirX + cirWidth) && (mouse.Y >= cirY && mouse.Y <= cirY + cirHeight))
+            if ((MousePosition.X >= Startpoint.X && MousePosition.X <= Startpoint.X + (Endpoint.X - Startpoint.X)) && (MousePosition.Y >= Startpoint.Y && MousePosition.Y <= Startpoint.Y + (Endpoint.Y - Startpoint.Y)))
             {
                 pen.Color = Color.FromArgb(255, 255, 0, 0);
                 return true;
             }
             return false;
-        }
-
-        public override void isNotSelected()
-        {
-            pen.Color = Color.FromArgb(255, 0, 0, 0);
-        }
-
-        public override bool Intersect(int xTest, int yTest)
-        {
-            if ((xTest >= cirX && xTest <= cirX + cirWidth) && (yTest >= cirY && yTest <= cirY + cirHeight))
-            { 
-                return true;
-            }
-            return false;
-        }
-
-        public override void RenderOnStaticView()
-        {
-            this.pen.Color = Color.Black;
-            this.pen.DashStyle = DashStyle.Solid;
-            Graphics.DrawRectangle(this.pen, cirX, cirY, cirWidth, cirHeight);
-        }
-        public override void RenderOnEditingView()
-        {
-            this.pen.Color = Color.Blue;
-            this.pen.DashStyle = DashStyle.Solid;
-            Graphics.DrawRectangle(this.pen, cirX, cirY, cirWidth, cirHeight);
-        }
-        public override void RenderOnPreview()
-        {
-            this.pen.Color = Color.Red;
-            this.pen.DashStyle = DashStyle.DashDot;
-            Graphics.DrawRectangle(this.pen, cirX, cirY, cirWidth, cirHeight);
-        }
-
-        public override void Translate(int x, int y, int xAmount, int yAmount)
-        {
-            this.cirX += xAmount;
-            this.cirY += yAmount;
         }
     }
 }

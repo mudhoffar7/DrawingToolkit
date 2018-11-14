@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DrawingToolkit.States;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,30 +11,12 @@ namespace DrawingToolkit.Tools
     public class SelectTool : ToolStripButton, ITool
     {
         private ICanvas canvas;
-        private DrawingObject selectedObject;
+        private Boolean multiSelect = false;
         private int xInitial;
         private int yInitial;
-
-        public Cursor Cursor
-        {
-            get
-            {
-                return Cursors.Arrow;
-            }
-        }
-
-        public ICanvas TargetCanvas
-        {
-            get
-            {
-                return this.canvas;
-            }
-            set
-            {
-                this.canvas = value;
-            }
-        }
-
+        private DrawingObject currentObject = null;
+        private DrawingObject parentObject = null;
+        
         public SelectTool()
         {
             this.Name = "Select Tool";
@@ -41,53 +24,80 @@ namespace DrawingToolkit.Tools
             this.Image = IconSet.cursor;
             this.CheckOnClick = true;
         }
+        public ICanvas TargetCanvas
+        {
+            get
+            {
+                return this.canvas;
+            }
+
+            set
+            {
+                this.canvas = value;
+            }
+        }
+
+        public Cursor Cursor => throw new NotImplementedException();
+
         public void ToolMouseDown(object sender, MouseEventArgs e)
         {
-            /*List<DrawingObject> ListObjects = this.canvas.GetListObjects();
-            foreach (DrawingObject dobject in ListObjects)
-            {
-
-                if (dobject.isSelected(e.Location))
-                {
-
-                    this.canvas.Repaint();
-                }
-                else
-                {
-                    dobject.isNotSelected();
-                    this.canvas.Repaint();
-                }
-
-            }*/
             this.xInitial = e.X;
             this.yInitial = e.Y;
 
-            if (e.Button == MouseButtons.Left && canvas != null)
+            int flag = 0;
+            foreach (DrawingObject obj in this.canvas.GetListObjects().Reverse<DrawingObject>())
             {
-                canvas.DeselectAllObjects();
-                selectedObject = canvas.SelectObjectAt(e.X, e.Y);
+                if (obj.intersect(e.Location) && flag == 0)
+                {
+                    if (!this.multiSelect)
+                    {
+                        flag = 1;
+                    }
+                    else
+                    {
+                        if (parentObject == null) parentObject = obj;
+                        if (currentObject != null) currentObject.addChild(obj);
+                    }
+                    this.currentObject = obj;
+                    obj.ChangeState(EditState.GetInstance());
+                }
+                else if (!this.multiSelect)
+                {
+                    obj.ChangeState(StaticState.GetInstance());
+                }
             }
         }
 
         public void ToolMouseMove(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && canvas != null)
+            if (e.Button == MouseButtons.Left && this.currentObject != null)
             {
-                if (selectedObject != null)
-                {
-                    int xAmount = e.X - xInitial;
-                    int yAmount = e.Y - yInitial;
-                    xInitial = e.X;
-                    yInitial = e.Y;
-
-                    selectedObject.Translate(e.X, e.Y, xAmount, yAmount);
-                }
+                int xAmount = e.X - xInitial;
+                int yAmount = e.Y - yInitial;
+                xInitial = e.X;
+                yInitial = e.Y;
+                if (this.multiSelect) parentObject.move(e.X, e.Y, xAmount, yAmount);
+                else currentObject.move(e.X, e.Y, xAmount, yAmount);
             }
         }
-
         public void ToolMouseUp(object sender, MouseEventArgs e)
         {
-            
+
+
+        }
+        public void ToolHotKeysDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == System.Windows.Forms.Keys.ControlKey)
+            {
+                this.multiSelect = true;
+            }
+        }
+        public void ToolHotKeysUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == System.Windows.Forms.Keys.ControlKey)
+            {
+                this.multiSelect = false;
+            }
         }
     }
 }

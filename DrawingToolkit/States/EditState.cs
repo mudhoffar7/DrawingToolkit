@@ -24,9 +24,9 @@ namespace DrawingToolkit.States
             obj.RenderOnEditingView();
         }
 
-        public override void Deselect(DrawingObject obj)
-        {
-            obj.ChangeState(StaticState.GetInstance());
-        }
+        //public override void Deselect(DrawingObject obj)
+        //{
+        //   obj.ChangeState(StaticState.GetInstance());
+        // }
     }
 }

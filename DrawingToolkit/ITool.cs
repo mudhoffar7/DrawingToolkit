@@ -16,5 +16,8 @@ namespace DrawingToolkit
         void ToolMouseDown(object sender, MouseEventArgs e);
         void ToolMouseUp(object sender, MouseEventArgs e);
         void ToolMouseMove(object sender, MouseEventArgs e);
+
+        void ToolHotKeysDown(object sender, KeyEventArgs e);
+        void ToolHotKeysUp(object sender, KeyEventArgs e);
     }
 }

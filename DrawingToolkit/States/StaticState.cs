@@ -24,9 +24,9 @@ namespace DrawingToolkit.States
             obj.RenderOnStaticView();
         }
 
-        public override void Select(DrawingObject obj)
-        {
-            obj.ChangeState(EditState.GetInstance());
-        }
+        //public override void Select(DrawingObject obj)
+        //{
+        //    obj.ChangeState(EditState.GetInstance());
+        //}
     }
 }

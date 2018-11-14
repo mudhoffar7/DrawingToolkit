@@ -30,6 +30,25 @@ namespace DrawingToolkit
             this.MouseDown += Canvas_MouseDown;
             this.MouseMove += Canvas_MouseMove;
             this.MouseUp += Canvas_MouseUp;
+
+            this.KeyDown += Canvas_HotkeysDown;
+            this.KeyUp += Canvas_HotkeysUp;
+        }
+
+        private void Canvas_HotkeysUp(object sender, KeyEventArgs e)
+        {
+            if (this.activeTool != null)
+            {
+                this.activeTool.ToolHotKeysUp(sender, e);
+            }
+        }
+
+        private void Canvas_HotkeysDown(object sender, KeyEventArgs e)
+        {
+            if (this.activeTool != null)
+            {
+                this.activeTool.ToolHotKeysDown(sender, e);
+            }
         }
 
         public List<DrawingObject> GetListObjects()
@@ -99,40 +118,10 @@ namespace DrawingToolkit
             throw new NotImplementedException();
         }
 
-        public DrawingObject SelectObjectAt(int x, int y)
-        {
-            DrawingObject obj = GetObjectAt(x, y);
-            if (obj != null)
-            {
-                obj.Select();
-            }
-
-            return obj;
-        }
-
-        public void DeselectAllObjects()
-        {
-            foreach (DrawingObject drawObj in drawingObjects)
-            {
-                drawObj.Deselect();
-            }
-        }
 
         public void RemoveDrawingObject(DrawingObject drawingObject)
         {
             this.drawingObjects.Remove(drawingObject);
-        }
-
-        public DrawingObject GetObjectAt(int x, int y)
-        {
-            foreach (DrawingObject obj in drawingObjects)
-            {
-                if (obj.Intersect(x, y))
-                {
-                    return obj;
-                }
-            }
-            return null;
         }
     }
 }
