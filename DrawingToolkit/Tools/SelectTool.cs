@@ -1,4 +1,5 @@
-﻿using DrawingToolkit.States;
+﻿using DrawingToolkit.Shapes;
+using DrawingToolkit.States;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,14 @@ namespace DrawingToolkit.Tools
     public class SelectTool : ToolStripButton, ITool
     {
         private ICanvas canvas;
-        private Boolean multiSelect = false;
         private int xInitial;
         private int yInitial;
         private DrawingObject currentObject = null;
-        private DrawingObject parentObject = null;
+
+        private Boolean multiselectProcess = false;
         
+        private List<DrawingObject> memberGroup = new List<DrawingObject>();
+
         public SelectTool()
         {
             this.Name = "Select Tool";
@@ -45,25 +48,20 @@ namespace DrawingToolkit.Tools
             this.yInitial = e.Y;
 
             int flag = 0;
+            if (currentObject != null && !multiselectProcess) currentObject.ChangeState(StaticState.GetInstance());
             foreach (DrawingObject obj in this.canvas.GetListObjects().Reverse<DrawingObject>())
             {
-                if (obj.intersect(e.Location) && flag == 0)
+                if (obj.intersect(e.Location))
                 {
-                    if (!this.multiSelect)
-                    {
-                        flag = 1;
-                    }
+                    if (!multiselectProcess) memberGroup.Clear();
                     else
                     {
-                        if (parentObject == null) parentObject = obj;
-                        if (currentObject != null) currentObject.addChild(obj);
+                        if (!memberGroup.Any()) memberGroup.Add(this.currentObject);
+                        memberGroup.Add(obj);
                     }
                     this.currentObject = obj;
                     obj.ChangeState(EditState.GetInstance());
-                }
-                else if (!this.multiSelect)
-                {
-                    obj.ChangeState(StaticState.GetInstance());
+                    break;
                 }
             }
         }
@@ -76,8 +74,7 @@ namespace DrawingToolkit.Tools
                 int yAmount = e.Y - yInitial;
                 xInitial = e.X;
                 yInitial = e.Y;
-                if (this.multiSelect) parentObject.move(e.X, e.Y, xAmount, yAmount);
-                else currentObject.move(e.X, e.Y, xAmount, yAmount);
+                currentObject.move(e.X, e.Y, xAmount, yAmount);
             }
         }
         public void ToolMouseUp(object sender, MouseEventArgs e)
@@ -89,14 +86,28 @@ namespace DrawingToolkit.Tools
         {
             if (e.KeyCode == System.Windows.Forms.Keys.ControlKey)
             {
-                this.multiSelect = true;
+                multiselectProcess = true;
+            }
+            else if (e.KeyCode == System.Windows.Forms.Keys.G)
+            {
+                if (memberGroup.Count() > 0)
+                {
+                    Group groupObject = new Group();
+                    foreach (DrawingObject obj in memberGroup)
+                    {
+                        groupObject.addMember(obj);
+                    }
+                    groupObject.ChangeState(EditState.GetInstance());
+                    this.canvas.AddDrawingObject(groupObject);
+                    this.currentObject = groupObject;
+                }
             }
         }
         public void ToolHotKeysUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == System.Windows.Forms.Keys.ControlKey)
             {
-                this.multiSelect = false;
+                multiselectProcess = false;
             }
         }
     }
