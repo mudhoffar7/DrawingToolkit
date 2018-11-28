@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace DrawingToolkit.Shapes
 {
-    public class Circle : DrawingObject
+    public class Circle : DrawingObject, IObservable
     {
+        List<IObserver> obsList = new List<IObserver>();
         public Circle(Point startPoints, Point endPoints)
         {
             this.Startpoint = startPoints;
@@ -32,6 +33,7 @@ namespace DrawingToolkit.Shapes
             }
             Rectangle objek = new Rectangle(Startpoint.X, Startpoint.Y, Endpoint.X - Startpoint.X, Endpoint.Y - Startpoint.Y);
             this.Graphics.DrawEllipse(pen, objek);
+            notifyObserver();
         }
 
         public override bool intersect(Point MousePosition)
@@ -42,6 +44,24 @@ namespace DrawingToolkit.Shapes
                 return true;
             }
             return false;
+        }
+
+        public void addObserver(IObserver observer)
+        {
+            obsList.Add(observer);
+        }
+
+        public void notifyObserver()
+        {
+            foreach (IObserver obs in obsList)
+            {
+                obs.update();
+            }
+        }
+
+        public void removeObserver(IObserver observer)
+        {
+            obsList.Remove(observer);
         }
     }
 }
