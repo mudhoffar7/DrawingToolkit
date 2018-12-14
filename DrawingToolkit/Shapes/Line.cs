@@ -28,6 +28,28 @@ namespace DrawingToolkit.Shapes
             this.Endpoint = endpoint;
         }
 
+        public override void Allignment(int position, ICanvas canvas)
+        {
+            if (position == 1)
+            {
+                Endpoint.X -= Startpoint.X;
+                Startpoint.X = 0;
+            }
+            if (position == 2)
+            {
+                int delta = canvas.GetWidth() - this.Endpoint.X;
+                Endpoint.X = canvas.GetWidth();
+                Startpoint.X += delta;
+            }
+            if(position == 3)
+            {
+                int center = canvas.GetWidth() / 2;
+                int objWidth = Endpoint.X - Startpoint.X;
+                Startpoint.X = center - (objWidth / 2);
+                Endpoint.X = center + (objWidth / 2);
+            }
+        }
+
         public override void DrawLogic()
         {
             this.Graphics.DrawLine(pen, Startpoint, Endpoint);

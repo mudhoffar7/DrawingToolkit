@@ -18,6 +18,12 @@ namespace DrawingToolkit.Shapes
             this.destination = destination;
             update();
         }
+
+        public override void Allignment(int position, ICanvas canvas)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void DrawLogic()
         {
             this.Graphics.DrawLine(pen, Startpoint, Endpoint);

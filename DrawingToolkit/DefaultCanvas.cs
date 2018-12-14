@@ -123,5 +123,10 @@ namespace DrawingToolkit
         {
             this.drawingObjects.Remove(drawingObject);
         }
+
+        public int GetWidth()
+        {
+            return this.Width;
+        }
     }
 }

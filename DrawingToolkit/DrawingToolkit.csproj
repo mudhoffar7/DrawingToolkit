@@ -58,6 +58,7 @@
       <DependentUpon>DrawingWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="ICanvas.cs" />
+    <Compile Include="ICommand.cs" />
     <Compile Include="IconSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -79,6 +80,15 @@
     <Compile Include="States\EditState.cs" />
     <Compile Include="States\PreviewState.cs" />
     <Compile Include="States\StaticState.cs" />
+    <Compile Include="Tools\AlignmentCenterTool.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\AlignmentLeftTool.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\AlignmentRightTool.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Tools\CircleTool.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -128,6 +138,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\line.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\center.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\right.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

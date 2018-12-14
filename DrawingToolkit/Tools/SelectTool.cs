@@ -102,6 +102,70 @@ namespace DrawingToolkit.Tools
                     this.currentObject = groupObject;
                 }
             }
+            else if (e.KeyCode == System.Windows.Forms.Keys.L)
+            {
+                if (memberGroup.Count() > 0)
+                {
+                    foreach (DrawingObject obj in memberGroup)
+                    {
+                        obj.Allignment(1, this.canvas);
+                    }
+                    canvas.Repaint();
+                }
+                else
+                {
+                    currentObject.Allignment(1, this.canvas);
+                    canvas.Repaint();
+                }
+            }
+            else if (e.KeyCode == System.Windows.Forms.Keys.R)
+            {
+                if (memberGroup.Count() > 0)
+                {
+                    foreach (DrawingObject obj in memberGroup)
+                    {
+                        obj.Allignment(2, this.canvas);
+                    }
+                    canvas.Repaint();
+                }
+                else
+                {
+                    currentObject.Allignment(2, this.canvas);
+                    canvas.Repaint();
+                }
+            }
+            else if (e.KeyCode == System.Windows.Forms.Keys.R)
+            {
+                if (memberGroup.Count() > 0)
+                {
+                    foreach (DrawingObject obj in memberGroup)
+                    {
+                        obj.Allignment(2, this.canvas);
+                    }
+                    canvas.Repaint();
+                }
+                else
+                {
+                    currentObject.Allignment(2, this.canvas);
+                    canvas.Repaint();
+                }
+            }
+            else if (e.KeyCode == System.Windows.Forms.Keys.C)
+            {
+                if (memberGroup.Count() > 0)
+                {
+                    foreach (DrawingObject obj in memberGroup)
+                    {
+                        obj.Allignment(3, this.canvas);
+                    }
+                    canvas.Repaint();
+                }
+                else
+                {
+                    currentObject.Allignment(3, this.canvas);
+                    canvas.Repaint();
+                }
+            }
         }
         public void ToolHotKeysUp(object sender, KeyEventArgs e)
         {

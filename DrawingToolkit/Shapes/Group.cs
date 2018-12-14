@@ -51,5 +51,13 @@ namespace DrawingToolkit.Shapes
         {
             //this.memberGroup.Remove(obj);
         }
+
+        public override void Allignment(int position, ICanvas canvas)
+        {
+            foreach (DrawingObject obj in memberGroup)
+            {
+                obj.Allignment(position, canvas);
+            }
+        }
     }
 }

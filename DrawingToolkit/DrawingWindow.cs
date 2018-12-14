@@ -32,6 +32,9 @@ namespace DrawingToolkit
             this.toolbox.AddTool(new CircleTool());
             this.toolbox.AddTool(new SelectTool());
             this.toolbox.AddTool(new ConnectorTool());
+            this.toolbox.AddTool(new AlignmentLeftTool());
+            this.toolbox.AddTool(new AlignmentCenterTool());
+            this.toolbox.AddTool(new AlignmentRightTool());
             //this.toolbox.AddTool(new StatefulLineTool());
             this.toolbox.ToolSelected += Toolbox_ToolSelected;
 

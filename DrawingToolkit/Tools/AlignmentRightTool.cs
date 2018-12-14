@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DrawingToolkit.Shapes;
 using System.Windows.Forms;
-using DrawingToolkit.States;
 
 namespace DrawingToolkit.Tools
 {
-    public class CircleTool : ToolStripButton, ITool
+    class AlignmentRightTool : ToolStripButton, ITool
     {
         private ICanvas canvas;
-        private Circle circle;
 
         public ICanvas TargetCanvas
         {
@@ -29,43 +26,28 @@ namespace DrawingToolkit.Tools
 
         public Cursor Cursor => throw new NotImplementedException();
 
-        public CircleTool()
+        public AlignmentRightTool()
         {
-            this.Name = "Circle Tool";
-            this.ToolTipText = "Circle Tool";
-            this.Image = IconSet.circle;
+            this.Name = "Alignment Right Tool";
+            this.ToolTipText = "AlignmentRightTool";
+            this.Image = IconSet.right;
             this.CheckOnClick = true;
         }
 
 
         public void ToolMouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
-            {
-                this.circle = new Circle(e.Location, e.Location);
-                this.circle.ChangeState(PreviewState.GetInstance());
-                this.canvas.AddDrawingObject(this.circle);
-            }
+            throw new NotImplementedException();
         }
 
         public void ToolMouseMove(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
-            {
-                if (this.circle != null)
-                {
-                    this.circle.Endpoint = new System.Drawing.Point(e.X, e.Y);
-                }
-            }
+            throw new NotImplementedException();
         }
 
         public void ToolMouseUp(object sender, MouseEventArgs e)
         {
-            if (circle != null)
-            {
-                this.circle.Endpoint = new System.Drawing.Point(e.X, e.Y);
-                this.circle.ChangeState(StaticState.GetInstance());
-            }
+            throw new NotImplementedException();
         }
 
         public void ToolHotKeysDown(object sender, KeyEventArgs e)
@@ -78,3 +60,4 @@ namespace DrawingToolkit.Tools
         }
     }
 }
+

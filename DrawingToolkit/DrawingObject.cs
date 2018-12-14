@@ -23,6 +23,7 @@ namespace DrawingToolkit
             this.state.Draw(this);
         }
         abstract public void DrawLogic();
+        abstract public void Allignment(int position, ICanvas canvas);
         abstract public Boolean intersect(Point MousePosition);
         public virtual void move(int x, int y, int xAmount, int yAmount)
         {
