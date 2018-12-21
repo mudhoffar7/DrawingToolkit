@@ -10,6 +10,7 @@ namespace DrawingToolkit
     public interface ICanvas
     {
         void SetActiveTool(ITool tool);
+        ITool GetActiveTool();
         void Repaint();
         void SetBackgroundColor(Color color);
         void AddDrawingObject(DrawingObject drawingObject);

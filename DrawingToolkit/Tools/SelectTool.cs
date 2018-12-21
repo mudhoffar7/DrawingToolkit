@@ -102,8 +102,14 @@ namespace DrawingToolkit.Tools
                     this.currentObject = groupObject;
                 }
             }
-            else if (e.KeyCode == System.Windows.Forms.Keys.L)
+            
+        }
+        public void updatePos(ITool tool)
+        {
+
+            if (tool.GetType() == typeof(AlignmentLeftTool))
             {
+                
                 if (memberGroup.Count() > 0)
                 {
                     foreach (DrawingObject obj in memberGroup)
@@ -118,7 +124,7 @@ namespace DrawingToolkit.Tools
                     canvas.Repaint();
                 }
             }
-            else if (e.KeyCode == System.Windows.Forms.Keys.R)
+            else if (tool.GetType() == typeof(AlignmentRightTool))
             {
                 if (memberGroup.Count() > 0)
                 {
@@ -134,23 +140,7 @@ namespace DrawingToolkit.Tools
                     canvas.Repaint();
                 }
             }
-            else if (e.KeyCode == System.Windows.Forms.Keys.R)
-            {
-                if (memberGroup.Count() > 0)
-                {
-                    foreach (DrawingObject obj in memberGroup)
-                    {
-                        obj.Allignment(2, this.canvas);
-                    }
-                    canvas.Repaint();
-                }
-                else
-                {
-                    currentObject.Allignment(2, this.canvas);
-                    canvas.Repaint();
-                }
-            }
-            else if (e.KeyCode == System.Windows.Forms.Keys.C)
+            else if (tool.GetType() == typeof(AlignmentCenterTool))
             {
                 if (memberGroup.Count() > 0)
                 {

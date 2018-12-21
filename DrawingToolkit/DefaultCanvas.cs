@@ -128,5 +128,10 @@ namespace DrawingToolkit
         {
             return this.Width;
         }
+
+        public ITool GetActiveTool()
+        {
+            return this.activeTool;
+        }
     }
 }

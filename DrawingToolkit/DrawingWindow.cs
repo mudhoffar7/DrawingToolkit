@@ -44,8 +44,16 @@ namespace DrawingToolkit
         {
             if (this.canvas != null)
             {
-                this.canvas.SetActiveTool(tool);
-                tool.TargetCanvas = this.canvas;
+                if (tool.GetType() != typeof(AlignmentCenterTool) && tool.GetType() != typeof(AlignmentLeftTool) && tool.GetType() != typeof(AlignmentRightTool))
+                {
+                    this.canvas.SetActiveTool(tool);
+                    tool.TargetCanvas = this.canvas;
+                } else
+                {
+                    SelectTool select = (SelectTool)this.canvas.GetActiveTool();
+                    select.updatePos(tool);
+                    Console.WriteLine(tool);
+                }
             }
         }
     }

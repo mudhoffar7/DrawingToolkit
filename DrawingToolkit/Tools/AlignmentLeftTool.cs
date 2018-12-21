@@ -32,6 +32,7 @@ namespace DrawingToolkit.Tools
             this.ToolTipText = "Alignment Left Tool";
             this.Image = IconSet.left;
             this.CheckOnClick = true;
+
         }
 
 
